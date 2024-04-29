@@ -130,7 +130,6 @@
         <thead>
             <tr>
                 <th>S.No</th>
-                <th>Title</th>
                 <th>Attribute</th>
                 <th>Cluster</th>
             </tr>
@@ -146,7 +145,7 @@
     var order = 1;
 
     // Function to populate the table with data and ranks
-    function populateTable(titles, attributes) {
+    function populateTable(attributes) {
         var tableBody = document.getElementById("dataBody");
         tableBody.innerHTML = "";
         orderMap = {};
@@ -162,12 +161,10 @@
         attributes.forEach(function(attr, index) {
             var row = document.createElement("tr");
             var serialNumberCell = document.createElement("td");
-            var titleCell = document.createElement("td");
             var attributeCell = document.createElement("td");
             var markCell = document.createElement("td");
 
             serialNumberCell.textContent = index + 1;
-            titleCell.textContent = titles[index] || ""; // If no title is provided, display an empty string
             attributeCell.textContent = attr;
 
             // If attribute has duplicates, mark with cluster number
@@ -181,7 +178,6 @@
             }
 
             row.appendChild(serialNumberCell);
-            row.appendChild(titleCell);
             row.appendChild(attributeCell);
             row.appendChild(markCell);
 
@@ -199,17 +195,14 @@
 
     // Function to add data to the table
     function addData() {
-        var dataInputTitle = document.getElementById("dataInputTitle");
-        var titles = dataInputTitle.value.trim().split('\n');
-
         var dataInputAttr = document.getElementById("dataInputAttr");
         var attributes = dataInputAttr.value.trim().split('\n');
 
-        // Check if at least one of the textareas has content
-        if ((titles.length > 0 && titles[0].trim() !== "") || (attributes.length > 0 && attributes[0].trim() !== "")) {
-            populateTable(titles, attributes);
+        // Check if the textarea has content
+        if (attributes.length > 0 && attributes[0].trim() !== "") {
+            populateTable(attributes);
         } else {
-            alert("Please enter data in at least one of the textareas.");
+            alert("Please enter data in the textarea.");
         }
     }
 
@@ -219,7 +212,7 @@
         var rows = document.getElementById("dataTable").getElementsByTagName("tr");
         for (var i = 1; i < rows.length; i++) { // start from 1 to skip header row
             var cells = rows[i].getElementsByTagName("td");
-            var orderCell = cells[3];
+            var orderCell = cells[2];
             if (filterValue === "all" || orderCell.textContent === filterValue) {
                 rows[i].style.display = "";
             } else {
